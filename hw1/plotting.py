@@ -73,4 +73,4 @@ class Plotter:
         self.axes.quiver(*vec, *pose)
 
     def temp2(self, pose):
-        self.axes.quiver(*pose[0], *pose[1])
+        self.axes.quiver(*pose[:3, 3], *pose[:3, :3])
