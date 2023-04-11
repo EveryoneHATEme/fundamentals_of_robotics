@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-constants = namedtuple('Constants', ['d_1', 'd_2', 'd_3', 'd_4', 'd_5'])(1., 3., 2., 1., 1.)
+constants = namedtuple('Constants', ['d_1', 'd_2', 'd_3', 'd_4', 'd_5'])(0., 3., 2., 1., 1.)
 
 Point = namedtuple('Point', ['x', 'y', 'z'])
 

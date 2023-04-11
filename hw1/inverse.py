@@ -11,43 +11,26 @@ class UnreachablePointException(Exception):
     pass
 
 
-desired_pose = np.array([[1, 0, 0, 0],
-                         [0, 1, 0, -5],
+desired_pose = np.array([[1, 0, 0, 4],
+                         [0, 1, 0, 0],
                          [0, 0, 1, 0],
                          [0, 0, 0, 1]])
 
 base_position = np.identity(4)
-wrist_position = desired_pose.dot(Translation.on_y(-constants.d_5))
+wrist_position = desired_pose.dot(np.linalg.inv(Translation.on_y(constants.d_5)))
 
-# c_3 = (np.linalg.norm(spherical_wrist_position) - constants.d_2 ** 2 - constants.d_3 ** 2) / (2 * constants.d_2 * constants.d_3)
-# s_3 = np.sqrt(1 - c_3 ** 2)
-#
-# theta_3 = atan2(s_3, c_3)
-#
-# c_2 = (np.sqrt(spherical_wrist_position[0] ** 2 + spherical_wrist_position[1] ** 2) * ())
+theta_1 = atan2(wrist_position[1, 3], wrist_position[0, 3])
 
-wrist_xy = wrist_position[:2, 3]
-wrist_unit_xy = wrist_xy / np.linalg.norm(wrist_xy)
+c_3 = (np.linalg.norm(wrist_position[:3, 3]) - constants.d_2 ** 2 - constants.d_3 ** 2) / (2 * constants.d_2 * constants.d_3)
+theta_3 = atan2(np.sqrt(1 - c_3 ** 2), c_3)
 
-c_1, s_1 = wrist_unit_xy
+c_2_numerator = (constants.d_2 + constants.d_3 * np.cos(theta_3)) * np.linalg.norm(wrist_position[:2, 3]) + constants.d_3 * np.sin(theta_3) * wrist_position[2, 3]
+s_2_numerator = wrist_position[2, 3] * (constants.d_2 + constants.d_3 * np.cos(theta_3)) - constants.d_3 * np.sin(theta_3) * np.linalg.norm(wrist_position[:2, 3])
+denominator = constants.d_2 ** 2 + constants.d_3 ** 2 + 2 * constants.d_2 * constants.d_3 * np.cos(theta_3)
 
-theta_1 = atan2(s_1, c_1)
+c_2 = c_2_numerator / denominator
+s_2 = s_2_numerator / denominator
 
-second_frame_position = base_position.dot(Rotation.around_z(theta_1)).dot(Translation.on_z(constants.d_1))[:3, 3]
-
-l_vector = wrist_position[:3, 3] - second_frame_position
-
-# c_3 = (np.linalg.norm(l_vector) - constants.d_2 ** 2 - constants.d_3 ** 2) / (2 * constants.d_2 * constants.d_3)
-#
-# if abs(c_3) > 1:
-#     raise UnreachablePointException()
-#
-# s_3 = -(1 - c_3 ** 2) ** 0.5
-
-theta_3 = atan2(c_1 * np.linalg.norm(wrist_xy), s_1 * np.linalg.norm(wrist_xy))
-
-s_2 = ((constants.d_2 + constants.d_3 * np.cos(theta_3)) * l_vector[1] - constants.d_3 * np.sin(theta_3) * l_vector[0]) / np.linalg.norm(l_vector)
-c_2 = ((constants.d_2 + constants.d_3 * np.cos(theta_3)) * l_vector[0] + constants.d_3 * np.sin(theta_3) * l_vector[1]) / np.linalg.norm(l_vector)
 theta_2 = atan2(s_2, c_2)
 
 R_0_3 = reduce(np.dot, [
@@ -68,12 +51,8 @@ frames = forward_kinematics(angles)
 
 limit = sum(constants) / 2
 plotter = Plotter(figure_size=(15, 15), x_limit=(-limit, limit), y_limit=(-limit, limit), z_limit=(-limit, limit))
-plotter.plot_poses(frames[::2])
+plotter.plot_poses(frames[1::2])
 plotter.plot_points(frames)
 plotter.plot_point(Point(*desired_pose[:3, 3]))
-plotter.plot_point(Point(0, 0, 0))
-plotter.plot_point(Point(*wrist_position[:3, 3]))
-plotter.temp(l_vector, desired_pose[:3, :3])
-plotter.temp2(desired_pose)
 plotter.show()
-plotter.save()
+plotter.save('inverse_example.png')

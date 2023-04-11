@@ -1,0 +1,79 @@
+\section*{Inverse kinematics}
+
+First, we should find the position of the wrist:
+
+$$P_{w} = P_{desired} T_y(d_5)$$
+
+Where $P_{w}$ is a position of the wrist in homogeneous form and $P_{desired}$ is desired position.
+
+We can express this position using first three generalized coordinates:
+
+$$\begin{cases}
+    P_x = c_1(d_2 c_2 + d_3 c_{23}) \\
+    P_y = s_1(d_2 c_2 + d_3 c_{23}) \\
+    P_z = d_1 + d_2 s_2 + d_3 s_{23} 
+\end{cases}$$
+
+Then, we can find $\theta_1$:
+
+$$\theta_1 = Atan2(P_y, P_x)$$
+
+To find $\theta_2$, I summed squares of $P_x$, $P_y$ and $P_z$:
+
+$$\begin{aligned}
+    P_x^2 + P_y^2 + P_z^2 & = (d_2 c_2 + d_3 c_{23})^2 + (d_1 + d_2 s_2 + d_3 s_{23})^2 = \\
+    & = d_1^2 + d_2^2 + d_3^2 + 2d_2d_3c_3 + 2d_1d_2s_2 + 2d_1d_3s_3
+\end{aligned}$$
+
+At this point I gave up and decided to set $d_1 = 0$ as they did in Siciliano, hence:
+
+$$c_3 = \frac{P_x^2 + P_y^2 + P_z^2 - d_2^2 - d_3^2}{2d_2d_3}$$
+$$s_3 = \sqrt{1 - c_3^2}$$
+
+I took $s_3$ with positive sign just because I want to find any solution.
+$$\theta_3 = Atan2(s_3, c_3)$$
+
+After that, summing squares of $P_x$ and $P_y$, we get:
+
+$$\begin{aligned}
+    P_x^2 + P_y^2 & = (d_2c_2 + d_3c_{23})^2 \\ 
+    d_2c_2 + d_3c_2c_3 - d_3s_2s_3 & = \sqrt{P_x^2 + P_y^2}
+\end{aligned}$$
+
+Using equation of $P_z$:
+
+$$\begin{aligned}
+    P_z & = d_2s_2 + d_3s_2c_3 + d_3s_3c_2 \\ 
+    s_2 & = \frac{P_z - d_3s_3c_2}{d_2 + d_3c_3}
+\end{aligned}$$
+
+Substituting it to the previous equation we get:
+
+$$\begin{aligned}
+    \sqrt{P_x^2 + P_y^2} & = d_2c_2 + d_3c_2c_3 - \frac{d_3s_3P_z - d_3^2s_3^2c_2}{d_2 - d_3c_3} \\
+    (d_2 + d_3c_3)\sqrt{P_x^2 + P_y^2} & = c_2(d_2 + d_3c_3)^2 - d_3s_3P_z + d_3^2s_3^2c_2 \\
+    c_2 & = \frac{(d_2 + d_3c_3)\sqrt{P_x^2 + P_y^2} + d_3 s_3P_z}{d_2^2 + d_3^2 + 2c_3d_2d_3} \\
+    s_2 & = \frac{P_z(d_2 + d_3c_3) - d_3s_3\sqrt{P_x^2 + P_y^2}}{d_2^2 + d_3^2 + 2d_2d_3c_3}
+\end{aligned}$$
+
+Now we should find $\theta_4$, $\theta_5$ and $\theta_6$
+
+Knowing other three coordinates we can find rotation matrix $R_3^0$.
+
+$$R_6^0 = R_3^0 R_6^3\ \longrightarrow \ R_6^3 = (R_3^0)^{-1} R_6^0$$
+
+We can represent $R_6^3$ as $R_y(\theta_4) R_z(\theta_5) R_y(\theta_6)$:
+
+$$R_6^3 = \begin{pmatrix}
+    -s_4s_6 + c_4c_5c_6 & -s_5c_4 & s_4c_6 + s_6c_4c_5 \\
+    s_5c_6 & c_5 & s_5s_6 \\
+    -s_4c_5c_6 - s_6c_4 & s_4s_5 & -s_4s_6c_5 + c_4c_6
+\end{pmatrix}$$
+
+Hence
+
+$$\begin{aligned}
+    \theta_4 & = Atan2(R_{3, 2}, R_{1, 2}) \\
+    \theta_5 & = Atan2(\sqrt{R_{2, 1}^2 + R_{2, 3}^2}, R_{2, 2}) \\
+    \theta_6 & = Atan2(R_{2, 3}, R_{2, 1})
+\end{aligned}$$
