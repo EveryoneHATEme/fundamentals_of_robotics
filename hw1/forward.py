@@ -25,7 +25,7 @@ def forward_kinematics(angles: Angles):
 
 
 if __name__ == '__main__':
-    angles_example = Angles(*np.random.uniform(0, np.pi * 2, 6))
+    angles_example = Angles(0., 0., 0., 0., 0., 0.)
 
     frames = forward_kinematics(angles_example)
 
@@ -34,4 +34,4 @@ if __name__ == '__main__':
     plotter.plot_poses(frames[::2])
     plotter.plot_points(frames)
     plotter.show()
-    plotter.save()
+    plotter.save('forward_zeros.png')
