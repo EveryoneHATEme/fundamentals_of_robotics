@@ -14,8 +14,8 @@ def get_dh_parameters(angles: Angles) -> list[tuple[float, float, float, float]]
         # a             d                               alpha       theta
         (0,             constants.d_1,                  np.pi / 2,  angles.theta_1),
         (constants.d_2, 0,                              0,          angles.theta_2),
-        (0,             0,                              -np.pi / 2, angles.theta_3),
-        (0,             constants.d_3 + constants.d_4,  np.pi / 2,  angles.theta_4),
+        (0,             0,                              -np.pi / 2, angles.theta_3 - np.pi / 2),
+        (0,             constants.d_3 + constants.d_4,  np.pi / 2,  angles.theta_4 - np.pi / 2),
         (0,             0,                              -np.pi / 2, angles.theta_5),
         (0,             constants.d_5,                  0,          angles.theta_6)
     ]
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     frames = forward_kinematics(angles_example)
 
     limit = sum(constants) / 2
-    plotter = Plotter(figure_size=(15, 15), x_limit=(-limit, limit), y_limit=(-limit, limit), z_limit=(-limit, limit))
+    plotter = Plotter(figure_size=(15, 15), x_limit=(-limit, limit + 2), y_limit=(-limit, limit), z_limit=(-limit, limit))
     plotter.plot_frames(frames)
     plotter.plot_points(frames)
     plotter.annotate_points(frames)

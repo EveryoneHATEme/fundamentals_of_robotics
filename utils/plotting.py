@@ -38,7 +38,7 @@ class Plotter:
     def plot_arrow(self, position: np.ndarray,
                    orientation: np.ndarray,
                    color: str):
-        self.axes.quiver(*position, *orientation, length=0.1, normalize=True, color=color)
+        self.axes.quiver(*position, *orientation, length=0.5, normalize=True, color=color)
 
     def annotate_points(self, frames: Iterable[np.ndarray]):
         for i, position in enumerate(self.extract_points(frames)):
