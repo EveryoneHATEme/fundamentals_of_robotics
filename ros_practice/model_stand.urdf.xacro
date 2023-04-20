@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="stand_model">
+
+    <xacro:macro name="stand">
+        <link name="stand_base">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </link>
+
+        <link name="stand_box">
+            <visual>
+                <origin xyz="0.0 0.0 0.25" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="0.5 0.5 0.5"/>
+                </geometry>
+                <material name="cyan">
+                    <color rgba="0 1 1 1"/>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="box_joint" type="revolute">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <parent link="stand_base"/>
+            <child link="stand_box"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="30" velocity="1.0" lower="-0.45" upper="0.45" />
+        </joint>
+    </xacro:macro>
+
+</robot>
