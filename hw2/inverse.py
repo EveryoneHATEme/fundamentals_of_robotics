@@ -1,11 +1,13 @@
 from math import atan2
+from random import uniform
 
 import numpy as np
 from itertools import starmap, accumulate
 from operator import itemgetter
 
-from utils import Translation, Rotation, Angles, DH, Plotter
-from hw2 import configuration, get_dh_parameters, forward_kinematics
+from utils import Angles, DH, Plotter
+from hw2 import configuration, get_dh_parameters
+from forward import forward_kinematics
 
 
 def inverse_kinematics(end_effector_frame: np.ndarray) -> list[Angles]:
@@ -39,14 +41,14 @@ def inverse_kinematics(end_effector_frame: np.ndarray) -> list[Angles]:
 
     # calculate four solutions for theta_2
     xy_norm = np.linalg.norm(wrist_position[:2])
-    theta_2_1 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] - a3 * sin_3_1 * xy_norm,
-                      (a2 + (a3 + a4) * cos_3) * xy_norm + a3 * sin_3_1 * wrist_position[2])
-    theta_2_2 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] + a3 * sin_3_1 * xy_norm,
-                      -(a2 + (a3 + a4) * cos_3) * xy_norm + a3 * sin_3_1 * wrist_position[2])
-    theta_2_3 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] - a3 * sin_3_2 * xy_norm,
-                      (a2 + (a3 + a4) * cos_3) * xy_norm + a3 * sin_3_2 * wrist_position[2])
-    theta_2_4 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] + a3 * sin_3_2 * xy_norm,
-                      -(a2 + (a3 + a4) * cos_3) * xy_norm + a3 * sin_3_2 * wrist_position[2])
+    theta_2_1 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] - (a3 + a4) * sin_3_1 * xy_norm,
+                      (a2 + (a3 + a4) * cos_3) * xy_norm + (a3 + a4) * sin_3_1 * wrist_position[2])
+    theta_2_2 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] + (a3 + a4) * sin_3_1 * xy_norm,
+                      -(a2 + (a3 + a4) * cos_3) * xy_norm + (a3 + a4) * sin_3_1 * wrist_position[2])
+    theta_2_3 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] - (a3 + a4) * sin_3_2 * xy_norm,
+                      (a2 + (a3 + a4) * cos_3) * xy_norm + (a3 + a4) * sin_3_2 * wrist_position[2])
+    theta_2_4 = atan2((a2 + (a3 + a4) * cos_3) * wrist_position[2] + (a3 + a4) * sin_3_2 * xy_norm,
+                      -(a2 + (a3 + a4) * cos_3) * xy_norm + (a3 + a4) * sin_3_2 * wrist_position[2])
 
     # get rotation matrices from frame 0 to frame 3
     partial_angles = [Angles(theta_1_1, theta_2_1, theta_3_1, 0, 0, 0),
@@ -95,7 +97,9 @@ if __name__ == '__main__':
 
     for i, coordinates in enumerate(inverse_results):
         forward_results = forward_kinematics(coordinates)
-        print(f'obtained: {forward_results[-1]}\ndesired: {desired_frame}\n\n')
+        print(i)
+        print(coordinates)
+        print(*forward_results, sep='\n', end='\n\n')
         plotter = Plotter(figure_size=(15, 15),
                           x_limit=(-limit, limit + 2),
                           y_limit=(-limit, limit),

@@ -16,8 +16,10 @@ def forward_kinematics(angles: Angles) -> list[np.ndarray]:
 
 if __name__ == '__main__':
     angles_example = Angles(-np.pi / 8, -np.pi / 8, np.pi / 4, np.pi / 2, np.pi / 6, np.pi / 8)
+    print(angles_example)
 
     frames = forward_kinematics(angles_example)
+    print(*frames, sep='\n')
 
     limit = sum(configuration) / 2
     plotter = Plotter(figure_size=(15, 15),

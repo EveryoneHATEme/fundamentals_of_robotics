@@ -50,6 +50,9 @@ class Plotter:
     def save(self, filename: str = 'plot.png'):
         self.figure.savefig(filename)
 
+    def __del__(self):
+        plt.close(self.figure)
+
     @staticmethod
     def extract_poses(frames: Iterable[np.ndarray]) -> Generator[tuple[np.ndarray, np.ndarray], None, None]:
         for frame in frames:
