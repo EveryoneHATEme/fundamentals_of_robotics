@@ -1,0 +1,23 @@
+\section*{Robot model scheme}
+
+\includegraphics[width=\linewidth]{sections/manipulator_structure.png}
+
+I changed frames assignment using DH parameters:
+
+\begin{tabular}{ |c|c|c|c|c| }
+    \hline
+     & $a$ & $d$ & $\alpha$ & $\theta$ \\
+    \hline
+    1 & 0 & $d_1$ & $\frac{\pi}{2}$ & $\theta_1$ \\
+    \hline
+    2 & $d_2$ & 0 & 0 & $\theta_2$ \\
+    \hline
+    3 & 0 & 0 & $-\frac{\pi}{2}$ & $\theta_3 - \frac{\pi}{2}$ \\
+    \hline
+    4 & 0 & $d_3 + d_4$ & $\frac{\pi}{2}$ & $\theta_4 - \frac{\pi}{2}$ \\
+    \hline
+    5 & 0 & 0 & $\frac{\pi}{2}$ & $\theta_5$ \\
+    \hline
+    6 & 0 & $d_5$ & 0 & $\theta_6$ \\
+    \hline
+\end{tabular}

@@ -1,0 +1,23 @@
+\section*{Derivation of the solution}
+
+\subsection*{Jacobian}
+
+Since the manipulator consists only of revolute joints, I used formula for revolute joints from geometrical approach:
+
+$$J(q) = \begin{pmatrix}
+    J_{p_i} \\ J_{\omega_i}
+\end{pmatrix} = \begin{pmatrix}
+    z_{i - 1} \times (p_e - p_{i - 1}) \\
+    z_{i - 1}
+\end{pmatrix}$$
+
+\subsection*{Singularity check}
+
+To check for singularity I calculated rank of the matrix and checked if it is equal to 6
+
+\subsection*{Cartesian velocity}
+
+Vector of velocities in cartesian space (or twist) can be found as 
+$$\begin{pmatrix}
+    v \\ \omega
+\end{pmatrix} = J \dot q $$
