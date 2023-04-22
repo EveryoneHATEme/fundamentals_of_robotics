@@ -6,11 +6,11 @@ from forward import forward_kinematics
 from inverse import inverse_kinematics
 from configuration import limits
 
-from utils import Angles, Plotter
+from utils import get_random_angles, Plotter
 
 
 def run_test(plot: bool = False, test_counter: int = None):
-    angles = Angles(*[uniform(-np.pi, np.pi) for _ in range(6)])
+    angles = get_random_angles()
 
     fr_results = forward_kinematics(angles)
     desired_frame = fr_results[-1]
