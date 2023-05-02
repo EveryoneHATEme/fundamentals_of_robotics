@@ -14,7 +14,7 @@ def forward_kinematics(angles: Angles) -> list[np.ndarray]:
     return frames_history
 
 
-if __name__ == '__main__':
+def main():
     angles_example = Angles(-np.pi / 8, -np.pi / 8, np.pi / 4, np.pi / 2, np.pi / 6, np.pi / 8)
     print(angles_example)
 
@@ -30,4 +30,4 @@ if __name__ == '__main__':
     plotter.plot_points(frames)
     plotter.annotate_points(frames)
     plotter.show()
-    plotter.save('images/forward_some_angles.png')
+    plotter.save('hw2/images/forward_some_angles.png')

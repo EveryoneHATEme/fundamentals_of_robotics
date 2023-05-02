@@ -1,5 +1,4 @@
 from math import atan2
-from random import uniform
 
 import numpy as np
 from itertools import starmap, accumulate
@@ -7,7 +6,7 @@ from operator import itemgetter
 
 from utils import Angles, DH, Plotter
 from hw2 import configuration, get_dh_parameters
-from forward import forward_kinematics
+from hw2.forward import forward_kinematics
 
 
 def inverse_kinematics(end_effector_frame: np.ndarray) -> list[Angles]:
@@ -86,7 +85,7 @@ def inverse_kinematics(end_effector_frame: np.ndarray) -> list[Angles]:
     return angles
 
 
-if __name__ == '__main__':
+def main():
     desired_frame = np.array([[0.82361604, 0.07306063, 0.56242222, 5.68374257],
                               [0.07306063, 0.9697373, -0.23296291, -2.35428326],
                               [-0.56242222, 0.23296291, 0.79335334, 1.79335334],
@@ -107,4 +106,4 @@ if __name__ == '__main__':
         plotter.plot_frames(forward_results)
         plotter.plot_points(forward_results)
         plotter.show()
-        plotter.save(f'images/inverse_{i}.png')
+        plotter.save(f'hw2/images/inverse_{i}.png')

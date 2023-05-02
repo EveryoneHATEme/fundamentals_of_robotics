@@ -1,1 +1,1 @@
-from configuration import configuration, get_dh_parameters
+from hw2.configuration import configuration, get_dh_parameters

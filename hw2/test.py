@@ -1,10 +1,9 @@
-from random import uniform
 import numpy as np
 import os
 
-from forward import forward_kinematics
-from inverse import inverse_kinematics
-from configuration import limits
+from hw2.forward import forward_kinematics
+from hw2.inverse import inverse_kinematics
+from hw2.configuration import limits
 
 from utils import get_random_angles, Plotter
 
@@ -27,10 +26,10 @@ def run_test(plot: bool = False, test_counter: int = None):
         plotter.annotate_points(fr_results)
 
         try:
-            os.mkdir(f'images/tests/{test_counter}')
+            os.mkdir(f'hw2/images/tests/{test_counter}')
         except FileExistsError:
             pass
-        plotter.save(f'images/tests/{test_counter}/forward.png')
+        plotter.save(f'hw2/images/tests/{test_counter}/forward.png')
 
         for i, result in enumerate(ik_results):
             plotter = Plotter(figure_size=(15, 15),
@@ -40,7 +39,7 @@ def run_test(plot: bool = False, test_counter: int = None):
             plotter.plot_frames(result)
             plotter.plot_points(result)
             plotter.annotate_points(result)
-            plotter.save(f'images/tests/{test_counter}/inverse_{i}.png')
+            plotter.save(f'hw2/images/tests/{test_counter}/inverse_{i}.png')
 
     if all([np.allclose(desired_frame, result) for result in ik_results]):
         print(f'Test {test_counter} passed')
@@ -52,7 +51,7 @@ def run_test(plot: bool = False, test_counter: int = None):
 
 def main():
     try:
-        os.mkdir('images/tests')
+        os.mkdir('hw2/images/tests')
     except FileExistsError:
         pass
 

@@ -1,7 +1,7 @@
 import numpy as np
 
 from utils import get_random_angles
-from forward import forward_kinematics
+from hw2.forward import forward_kinematics
 
 
 def compute_jacobian(frames: list[np.ndarray]) -> np.ndarray:
@@ -29,7 +29,7 @@ def cartesian_velocities(jacobian: np.ndarray, q_dot: np.ndarray) -> np.ndarray:
     return jacobian.dot(q_dot)
 
 
-if __name__ == '__main__':
+def main():
     angles = get_random_angles()
     forward_results = forward_kinematics(angles)
     matrix = compute_jacobian(forward_results)
